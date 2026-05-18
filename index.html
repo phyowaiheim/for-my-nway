@@ -104,14 +104,13 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            padding: 30px 20px calc(15px + env(safe-area-inset-bottom)) 20px;
+            padding: 25px 20px calc(10px + env(safe-area-inset-bottom)) 20px;
         }
 
         header {
             text-align: center;
             animation: fadeInDown 1s ease forwards;
             margin-top: 25px;
-            /* Music Bar နဲ့ မငြိအောင် နေရာချန်တာပါ */
         }
 
         header h1 {
@@ -237,7 +236,7 @@
             justify-content: center;
         }
 
-        /* 🌟 NEW ADDED FUNCTION: PREMIUM MUSIC STATUS BAR (TOP RIGHT) */
+        /* 🌟 PREMIUM MUSIC STATUS BAR (TOP RIGHT) */
         .music-player-container {
             position: fixed;
             top: 20px;
@@ -305,13 +304,36 @@
             margin-top: 1px;
         }
 
-        /* Bottom Navigation Indicator */
+        /* Bottom Navigation & Premium Footer */
         .footer-nav {
             text-align: center;
             color: #aaa;
-            font-size: 0.85rem;
+            font-size: 0.82rem;
             font-weight: 500;
             letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .app-footer {
+            text-align: center;
+            font-size: 0.68rem;
+            color: #b5b5b5;
+            letter-spacing: 0.5px;
+            font-weight: 400;
+        }
+
+        /* Luxury Height and Spacing for Footer Wrapper */
+        .footer-wrapper {
+            height: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 6px;
+            /* Navigation နဲ့ Copyright ကြား အကွာအဝေး */
+            margin-top: 10px;
+            margin-bottom: calc(5px + env(safe-area-inset-bottom));
+            /* iOS Notch ဖုန်းတွေအတွက်ပါ တွက်ပေးထားတာပါ */
         }
 
         /* Tap Burst Heart Particle Styles */
@@ -388,8 +410,8 @@
         <div class="welcome-text">Open with love</div>
     </div>
 
-    <audio id="loveSong" loop>
-        <source src="Perfect - Ed Sheeran.m4a" type="audio/mp4">
+    <audio id="loveSong" loop preload="auto">
+        <source src="Perfect.m4a" type="audio/mp4">
     </audio>
 
     <div class="music-player-container" id="musicPlayer" onclick="toggleMusic()">
@@ -404,7 +426,7 @@
 
     <div class="app-container">
         <header>
-            <h1>To My Dearest Nway ❤️</h1>
+            <h1>To My Nway ❤️</h1>
             <p id="progressText">Story 1 of 9</p>
         </header>
 
@@ -469,11 +491,10 @@
                     style="background: linear-gradient(135deg, #ffeef8 0%, #ffd1dc 100%); display:flex; flex-direction:column; align-items:center; justify-content:center; padding: 20px;">
                     <span style="font-size: 3.5rem; margin-bottom: 15px;">❤️</span>
                     <p
-                        style="font-size: 1.05rem; line-height: 1.8; color: #d63384; font-weight: 600; margin:0; text-align:center; ">
+                        style="font-size: 1.05rem; line-height: 1.8; color: #d63384; font-weight: 600; margin:0; text-align:center;">
                         မောင့်ကို အများကြီး ဂရုစိုက်ပေးပြီး <br>
                         အမြဲတမ်း နားလည်ပေးလို့<br> အများကြီး ချစ်တယ်နော်<br>
                         မောင့်ဘေးနားမှာ အမြဲရှိပေးလို့<br> ကျေးဇူးအများကြီးတင်ပါတယ် နွေး။ <br>
-
                     </p>
                 </div>
                 <div class="caption-area" style="font-weight: bold; color: var(--luxury-pink);">I Love You So Much
@@ -482,7 +503,10 @@
 
         </div>
 
-        <div class="footer-nav">👉 TAP OR SWIPE CARD TO FLIP</div>
+        <div class="footer-wrapper">
+            <div class="footer-nav">👉 TAP OR SWIPE CARD TO FLIP</div>
+            <div class="app-footer">© 2026 | Made with ❤️ by Brownlee for Nway</div>
+        </div>
     </div>
 
     <script>
@@ -493,12 +517,32 @@
         const progressText = document.getElementById('progressText');
 
         let currentIdx = 0;
-        const anniversaryDate = new Date(2024, 1, 9);
+        const anniversaryDate = new Date(2024, 1, 9); // Feb 9, 2024
 
         function launchExperience() {
             overlay.classList.add('fade-out');
-            audio.play().catch(e => console.log("Autoplay blocker preset"));
-            badge.classList.add('playing');
+
+            if (window.AudioContext || window.webkitAudioContext) {
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                if (audioCtx.state === 'suspended') {
+                    audioCtx.resume();
+                }
+            }
+
+            audio.load();
+            const playPromise = audio.play();
+
+            if (playPromise !== undefined) {
+                playPromise.then(() => {
+                    badge.classList.add('playing');
+                }).catch(e => {
+                    console.log("Autoplay blocker fallback triggered:", e);
+                    document.body.addEventListener('click', () => {
+                        audio.play();
+                        badge.classList.add('playing');
+                    }, { once: true });
+                });
+            }
 
             setInterval(createPremiumParticle, 300);
             setInterval(updateCounter, 1000);
