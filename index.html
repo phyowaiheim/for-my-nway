@@ -26,12 +26,14 @@
             background: var(--premium-bg);
             font-family: '-apple-system', BlinkMacSystemFont, 'SF Pro Text', Roboto, sans-serif;
             color: #333;
-            overflow: hidden;
-            height: 100vh;
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             -webkit-tap-highlight-color: transparent;
+            /* ဖုန်းမှာ အောက်ခြေအကုန်မြင်ရဖို့ overflow ကို ပြင်လိုက်ပါတယ် */
+            overflow-x: hidden;
+            overflow-y: auto;
         }
 
         /* 🌟 Particles Space */
@@ -93,32 +95,39 @@
             animation: textGlow 2s ease-in-out infinite alternate;
         }
 
-        /* 🌟 Main Phone Frame Container */
+        /* 🌟 Main Phone Frame Container (Flexible & Scrollable Fix) */
         .app-container {
             position: relative;
             z-index: 2;
             width: 100vw;
-            height: 100vh;
             max-width: 450px;
-            max-height: 850px;
+            /* တအားသေးတဲ့ ဖုန်းတွေမှာ ကပ်မနေအောင် min-height နဲ့ ညှိပြီး overflow ပေးထားပါတယ် */
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            padding: 25px 20px calc(10px + env(safe-area-inset-bottom)) 20px;
+            padding: 20px 20px calc(20px + env(safe-area-inset-bottom)) 20px;
+            gap: 10px;
         }
 
         header {
             text-align: center;
             animation: fadeInDown 1s ease forwards;
-            margin-top: 25px;
+            margin-top: 40px;
+            /* Music player နဲ့ မငြိအောင် နည်းနည်းချပေးထားပါတယ် */
         }
 
         header h1 {
             color: var(--luxury-pink);
-            font-size: 2.1rem;
+            font-size: 1.9rem;
+            /* မိုဘိုင်းအတွက် font size နည်းနည်း လျှော့ပေးထားပါတယ် */
             margin: 0;
             font-weight: 800;
             text-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+        }
+
+        header p {
+            margin: 5px 0 0 0;
         }
 
         /* LIVE DAYS COUNTER BOX */
@@ -126,12 +135,13 @@
             background: rgba(255, 255, 255, 0.75);
             border-radius: 20px;
             padding: 10px 15px;
-            margin: 15px 0 5px 0;
+            margin: 5px 0;
             box-shadow: 0 8px 25px rgba(214, 51, 132, 0.06);
             border: 1px solid rgba(255, 255, 255, 0.8);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             text-align: center;
+            flex-shrink: 0;
         }
 
         .counter-title {
@@ -170,10 +180,20 @@
         /* 🌟 INTERACTIVE SCRAPBOOK BOOK-ENGINE */
         .book-wrapper {
             position: relative;
-            flex-grow: 1;
-            margin: 15px 0;
             width: 100%;
+            /* Card တွေ ပျောက်မသွားဘဲ ဖုန်း Screen အလိုက် အချိုးကျ ဖြစ်အောင် height ကို အသေမထားဘဲ ထိန်းထားပါတယ် */
+            height: 380px;
             perspective: 1000px;
+            margin: 10px 0;
+            flex-shrink: 0;
+        }
+
+        @media (max-height: 667px) {
+
+            /* iPhone SE လို screen တအားသေးတဲ့ ဖုန်းတွေအတွက် Card height ကို နည်းနည်း ထပ်လျှော့ပေးပါတယ် */
+            .book-wrapper {
+                height: 320px;
+            }
         }
 
         .story-card {
@@ -182,7 +202,7 @@
             height: 100%;
             background: white;
             border-radius: 24px;
-            padding: 16px 16px 24px 16px;
+            padding: 14px 14px 20px 14px;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.06), 0 5px 15px rgba(214, 51, 132, 0.04);
             display: flex;
             flex-direction: column;
@@ -223,14 +243,14 @@
         }
 
         .caption-area {
-            padding: 15px 10px 0 10px;
+            padding: 12px 5px 0 5px;
             text-align: center;
             font-family: 'Georgia', serif;
             font-style: italic;
-            font-size: 1.05rem;
+            font-size: 0.98rem;
             color: #444;
-            line-height: 1.5;
-            min-height: 55px;
+            line-height: 1.4;
+            min-height: 48px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -239,27 +259,27 @@
         /* 🌟 PREMIUM MUSIC STATUS BAR (TOP RIGHT) */
         .music-player-container {
             position: fixed;
-            top: 20px;
-            right: 20px;
+            top: 15px;
+            right: 15px;
             z-index: 1000;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             background: rgba(255, 255, 255, 0.65);
-            padding: 4px 14px 4px 6px;
+            padding: 4px 12px 4px 5px;
             border-radius: 30px;
             border: 1px solid rgba(255, 255, 255, 0.8);
             box-shadow: 0 6px 20px rgba(214, 51, 132, 0.05);
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
-            max-width: 190px;
+            max-width: 160px;
             cursor: pointer;
         }
 
         .vinyl-badge {
             background: #222;
-            width: 36px;
-            height: 36px;
+            width: 30px;
+            height: 30px;
             border-radius: 50%;
             display: flex;
             justify-content: center;
@@ -271,7 +291,7 @@
 
         .vinyl-badge::after {
             content: '🎵';
-            font-size: 12px;
+            font-size: 10px;
         }
 
         .vinyl-badge.playing {
@@ -286,7 +306,7 @@
         }
 
         .music-title {
-            font-size: 0.78rem;
+            font-size: 0.72rem;
             font-weight: 700;
             color: #333;
             white-space: nowrap;
@@ -295,7 +315,7 @@
         }
 
         .music-artist {
-            font-size: 0.65rem;
+            font-size: 0.6rem;
             color: var(--luxury-pink);
             font-weight: 500;
             white-space: nowrap;
@@ -304,36 +324,33 @@
             margin-top: 1px;
         }
 
-        /* Bottom Navigation & Premium Footer */
-        .footer-nav {
-            text-align: center;
-            color: #aaa;
-            font-size: 0.82rem;
-            font-weight: 500;
-            letter-spacing: 1px;
-            margin-bottom: 8px;
-        }
-
-        .app-footer {
-            text-align: center;
-            font-size: 0.68rem;
-            color: #b5b5b5;
-            letter-spacing: 0.5px;
-            font-weight: 400;
-        }
-
         /* Luxury Height and Spacing for Footer Wrapper */
         .footer-wrapper {
-            height: 60px;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            gap: 6px;
-            /* Navigation နဲ့ Copyright ကြား အကွာအဝေး */
-            margin-top: 10px;
-            margin-bottom: calc(5px + env(safe-area-inset-bottom));
-            /* iOS Notch ဖုန်းတွေအတွက်ပါ တွက်ပေးထားတာပါ */
+            gap: 4px;
+            margin-top: auto;
+            /* Footer ကို အမြဲတမ်း အောက်ဆုံးမှာ ကပ်နေအောင် တွန်းထားပါတယ် */
+            padding-bottom: 10px;
+            flex-shrink: 0;
+        }
+
+        .footer-nav {
+            text-align: center;
+            color: #aaa;
+            font-size: 0.78rem;
+            font-weight: 500;
+            letter-spacing: 1px;
+        }
+
+        .app-footer {
+            text-align: center;
+            font-size: 0.65rem;
+            color: #b5b5b5;
+            letter-spacing: 0.5px;
+            font-weight: 400;
         }
 
         /* Tap Burst Heart Particle Styles */
@@ -489,15 +506,17 @@
             <div class="story-card" style="--r: 0deg">
                 <div class="img-container"
                     style="background: linear-gradient(135deg, #ffeef8 0%, #ffd1dc 100%); display:flex; flex-direction:column; align-items:center; justify-content:center; padding: 20px;">
-                    <span style="font-size: 3.5rem; margin-bottom: 15px;">❤️</span>
+                    <span style="font-size: 3rem; margin-bottom: 10px;">❤️</span>
                     <p
-                        style="font-size: 1.05rem; line-height: 1.8; color: #d63384; font-weight: 600; margin:0; text-align:center;">
+                        style="font-size: 0.95rem; line-height: 1.6; color: #d63384; font-weight: 600; margin:0; text-align:center;">
                         မောင့်ကို အများကြီး ဂရုစိုက်ပေးပြီး <br>
                         အမြဲတမ်း နားလည်ပေးလို့<br> အများကြီး ချစ်တယ်နော်<br>
                         မောင့်ဘေးနားမှာ အမြဲရှိပေးလို့<br> ကျေးဇူးအများကြီးတင်ပါတယ် နွေး။ <br>
                     </p>
                 </div>
-                <div class="caption-area" style="font-weight: bold; color: var(--luxury-pink);">I Love You So Much
+                <div class="caption-area"
+                    style="font-weight: bold; color: var(--luxury-pink); min-height: auto; padding-top: 5px;">I Love You
+                    So Much
                     Forever 🌹</div>
             </div>
 
