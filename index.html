@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>For My Dearest Nway ❤️</title>
+    <style>
+        :root {
+            --luxury-pink: #d63384;
+            --soft-rose: #ff85b3;
+            --gold-glow: #ffd700;
+            --premium-bg: linear-gradient(180deg, #fff2f6 0%, #ffe3ec 100%);
+        }
+
+        * {
+            box-sizing: border-box;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background: var(--premium-bg);
+            font-family: '-apple-system', BlinkMacSystemFont, 'SF Pro Text', Roboto, sans-serif;
+            color: #333;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* 🌟 Particles Space */
+        .hearts-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* 🌟 Ultra-Premium Welcome Overlay */
+        .welcome-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, #ffffff 0%, #ffd1dc 100%);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: all 1s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+
+        .welcome-overlay.fade-out {
+            opacity: 0;
+            visibility: hidden;
+            transform: scale(1.1);
+        }
+
+        .heart-box {
+            position: relative;
+            cursor: pointer;
+            width: 100px;
+            height: 100px;
+            animation: heartPulse 1.5s infinite;
+        }
+
+        .heart-box span {
+            font-size: 5rem;
+            display: block;
+            text-align: center;
+            line-height: 100px;
+            filter: drop-shadow(0 10px 15px rgba(214, 51, 132, 0.3));
+        }
+
+        .welcome-text {
+            margin-top: 30px;
+            color: var(--luxury-pink);
+            font-weight: 700;
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            animation: textGlow 2s ease-in-out infinite alternate;
+        }
+
+        /* 🌟 Main Phone Frame Container */
+        .app-container {
+            position: relative;
+            z-index: 2;
+            width: 100vw;
+            height: 100vh;
+            max-width: 450px;
+            max-height: 850px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 30px 20px calc(15px + env(safe-area-inset-bottom)) 20px;
+        }
+
+        header {
+            text-align: center;
+            animation: fadeInDown 1s ease forwards;
+            margin-top: 25px;
+            /* Music Bar နဲ့ မငြိအောင် နေရာချန်တာပါ */
+        }
+
+        header h1 {
+            color: var(--luxury-pink);
+            font-size: 2.1rem;
+            margin: 0;
+            font-weight: 800;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+        }
+
+        /* LIVE DAYS COUNTER BOX */
+        .counter-container {
+            background: rgba(255, 255, 255, 0.75);
+            border-radius: 20px;
+            padding: 10px 15px;
+            margin: 15px 0 5px 0;
+            box-shadow: 0 8px 25px rgba(214, 51, 132, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            text-align: center;
+        }
+
+        .counter-title {
+            font-size: 0.75rem;
+            color: #8c969e;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+            font-weight: bold;
+        }
+
+        .time-box {
+            display: flex;
+            justify-content: center;
+            gap: 14px;
+        }
+
+        .time-segment {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .time-num {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--luxury-pink);
+        }
+
+        .time-label {
+            font-size: 0.6rem;
+            color: #777;
+            font-weight: bold;
+        }
+
+        /* 🌟 INTERACTIVE SCRAPBOOK BOOK-ENGINE */
+        .book-wrapper {
+            position: relative;
+            flex-grow: 1;
+            margin: 15px 0;
+            width: 100%;
+            perspective: 1000px;
+        }
+
+        .story-card {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: white;
+            border-radius: 24px;
+            padding: 16px 16px 24px 16px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.06), 0 5px 15px rgba(214, 51, 132, 0.04);
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.6s ease;
+            opacity: 0;
+            transform: scale(0.9) translateY(20px);
+            pointer-events: none;
+            backface-visibility: hidden;
+        }
+
+        .story-card.active {
+            opacity: 1;
+            transform: scale(1) translateY(0) rotate(var(--r, 0deg));
+            pointer-events: auto;
+            z-index: 10;
+        }
+
+        .story-card.passed {
+            opacity: 0;
+            transform: translateX(-150%) rotate(-15deg) scale(0.9);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .img-container {
+            width: 100%;
+            flex-grow: 1;
+            border-radius: 16px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .img-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .caption-area {
+            padding: 15px 10px 0 10px;
+            text-align: center;
+            font-family: 'Georgia', serif;
+            font-style: italic;
+            font-size: 1.05rem;
+            color: #444;
+            line-height: 1.5;
+            min-height: 55px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* 🌟 NEW ADDED FUNCTION: PREMIUM MUSIC STATUS BAR (TOP RIGHT) */
+        .music-player-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.65);
+            padding: 4px 14px 4px 6px;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 6px 20px rgba(214, 51, 132, 0.05);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            max-width: 190px;
+            cursor: pointer;
+        }
+
+        .vinyl-badge {
+            background: #222;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 2px solid white;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+            flex-shrink: 0;
+        }
+
+        .vinyl-badge::after {
+            content: '🎵';
+            font-size: 12px;
+        }
+
+        .vinyl-badge.playing {
+            animation: spin 3s linear infinite;
+        }
+
+        .music-details {
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .music-title {
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: #333;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .music-artist {
+            font-size: 0.65rem;
+            color: var(--luxury-pink);
+            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-top: 1px;
+        }
+
+        /* Bottom Navigation Indicator */
+        .footer-nav {
+            text-align: center;
+            color: #aaa;
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 1px;
+        }
+
+        /* Tap Burst Heart Particle Styles */
+        .burst-heart {
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            font-size: 22px;
+            animation: burstEffect 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        }
+
+        /* Keyframes Animations */
+        @keyframes heartPulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.15);
+                filter: drop-shadow(0 15px 25px rgba(214, 51, 132, 0.5));
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        @keyframes textGlow {
+            from {
+                text-shadow: 0 0 5px rgba(214, 51, 132, 0.2);
+            }
+
+            to {
+                text-shadow: 0 0 15px rgba(214, 51, 132, 0.6), 0 0 20px rgba(214, 51, 132, 0.2);
+            }
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes burstEffect {
+            0% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translate(var(--mx), var(--my)) scale(0);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="welcome-overlay" id="overlay" onclick="launchExperience()">
+        <div class="heart-box"><span>❤️</span></div>
+        <div class="welcome-text">Open with love</div>
+    </div>
+
+    <audio id="loveSong" loop>
+        <source src="Perfect - Ed Sheeran.m4a" type="audio/mp4">
+    </audio>
+
+    <div class="music-player-container" id="musicPlayer" onclick="toggleMusic()">
+        <div class="vinyl-badge" id="vinylBadge"></div>
+        <div class="music-details">
+            <span class="music-title">Perfect</span>
+            <span class="music-artist">Ed Sheeran</span>
+        </div>
+    </div>
+
+    <div class="hearts-bg" id="heartsBg"></div>
+
+    <div class="app-container">
+        <header>
+            <h1>To My Dearest Nway ❤️</h1>
+            <p id="progressText">Story 1 of 9</p>
+        </header>
+
+        <div class="counter-container">
+            <div class="counter-title">Days of Loving You 💞</div>
+            <div class="time-box">
+                <div class="time-segment"><span class="time-num" id="d-val">00</span><span
+                        class="time-label">DAYS</span></div>
+                <div class="time-segment"><span class="time-num" id="h-val">00</span><span class="time-label">HRS</span>
+                </div>
+                <div class="time-segment"><span class="time-num" id="m-val">00</span><span
+                        class="time-label">MINS</span></div>
+                <div class="time-segment"><span class="time-num" id="s-val">00</span><span
+                        class="time-label">SECS</span></div>
+            </div>
+        </div>
+
+        <div class="book-wrapper" id="bookWrapper">
+
+            <div class="story-card active" style="--r: -1deg">
+                <div class="img-container"><img src="photo_1_2026-05-18_19-37-36.jpg" alt="Nway"></div>
+                <div class="caption-area">"You are my today and all of my tomorrows ✨"</div>
+            </div>
+
+            <div class="story-card" style="--r: 2deg">
+                <div class="img-container"><img src="photo_2_2026-05-18_19-37-36.jpg" alt="Nway"></div>
+                <div class="caption-area">"The prettiest smile in the entire universe ❤️"</div>
+            </div>
+
+            <div class="story-card" style="--r: -2deg">
+                <div class="img-container"><img src="photo_3_2026-05-18_19-37-36.jpg" alt="Nway"></div>
+                <div class="caption-area">"In your beautiful eyes, I found my sweet home 🏡"</div>
+            </div>
+
+            <div class="story-card" style="--r: 1.5deg">
+                <div class="img-container"><img src="photo_5_2026-05-18_19-37-36.jpg" alt="Nway"></div>
+                <div class="caption-area">"Every single moment spent with you is special 🌸"</div>
+            </div>
+
+            <div class="story-card" style="--r: -3deg">
+                <div class="img-container"><img src="photo_6_2026-05-18_19-37-36.jpg" alt="Nway"></div>
+                <div class="caption-area">"My absolute favorite place is inside your warm hug 🤗"</div>
+            </div>
+
+            <div class="story-card" style="--r: 2deg">
+                <div class="img-container"><img src="photo_7_2026-05-18_19-37-36.jpg" alt="Nway"></div>
+                <div class="caption-area">"Thank you for being my peace in this crazy world 🕊️"</div>
+            </div>
+
+            <div class="story-card" style="--r: -1.5deg">
+                <div class="img-container"><img src="photo_8_2026-05-18_19-37-36.jpg" alt="Nway"></div>
+                <div class="caption-area">"Loving you is the best thing I have ever done 💞"</div>
+            </div>
+
+            <div class="story-card" style="--r: 3deg">
+                <div class="img-container"><img src="photo_10_2026-05-18_19-37-36.jpg" alt="Nway"></div>
+                <div class="caption-area">"Forever and always, just you and me, Nway 🔐"</div>
+            </div>
+
+            <div class="story-card" style="--r: 0deg">
+                <div class="img-container"
+                    style="background: linear-gradient(135deg, #ffeef8 0%, #ffd1dc 100%); display:flex; flex-direction:column; align-items:center; justify-content:center; padding: 20px;">
+                    <span style="font-size: 3.5rem; margin-bottom: 15px;">❤️</span>
+                    <p
+                        style="font-size: 1.05rem; line-height: 1.8; color: #d63384; font-weight: 600; margin:0; text-align:center; ">
+                        မောင့်ကို အများကြီး ဂရုစိုက်ပေးပြီး <br>
+                        အမြဲတမ်း နားလည်ပေးလို့<br> အများကြီး ချစ်တယ်နော်<br>
+                        မောင့်ဘေးနားမှာ အမြဲရှိပေးလို့<br> ကျေးဇူးအများကြီးတင်ပါတယ် နွေး။ <br>
+
+                    </p>
+                </div>
+                <div class="caption-area" style="font-weight: bold; color: var(--luxury-pink);">I Love You So Much
+                    Forever 🌹</div>
+            </div>
+
+        </div>
+
+        <div class="footer-nav">👉 TAP OR SWIPE CARD TO FLIP</div>
+    </div>
+
+    <script>
+        const audio = document.getElementById('loveSong');
+        const overlay = document.getElementById('overlay');
+        const badge = document.getElementById('vinylBadge');
+        const cards = document.querySelectorAll('.story-card');
+        const progressText = document.getElementById('progressText');
+
+        let currentIdx = 0;
+        const anniversaryDate = new Date(2024, 1, 9);
+
+        function launchExperience() {
+            overlay.classList.add('fade-out');
+            audio.play().catch(e => console.log("Autoplay blocker preset"));
+            badge.classList.add('playing');
+
+            setInterval(createPremiumParticle, 300);
+            setInterval(updateCounter, 1000);
+            updateCounter();
+        }
+
+        function toggleMusic() {
+            if (audio.paused) {
+                audio.play();
+                badge.classList.add('playing');
+            } else {
+                audio.pause();
+                badge.classList.remove('playing');
+            }
+        }
+
+        function flipCard(e) {
+            createTapHeartBurst(e);
+
+            if (currentIdx >= cards.length - 1) {
+                cards.forEach(card => card.classList.remove('passed', 'active'));
+                currentIdx = 0;
+                cards[currentIdx].classList.add('active');
+                updateProgress();
+                return;
+            }
+
+            cards[currentIdx].classList.remove('active');
+            cards[currentIdx].classList.add('passed');
+
+            currentIdx++;
+            cards[currentIdx].classList.add('active');
+            updateProgress();
+        }
+
+        function updateProgress() {
+            progressText.innerText = `Story ${currentIdx + 1} of ${cards.length}`;
+        }
+
+        function updateCounter() {
+            const now = new Date();
+            const diff = now - anniversaryDate;
+
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+            const minutes = Math.floor((diff / (1000 * 60)) % 60);
+            const seconds = Math.floor((diff / 1000) % 60);
+
+            document.getElementById('d-val').innerText = days < 10 ? '0' + days : days;
+            document.getElementById('h-val').innerText = hours < 10 ? '0' + hours : hours;
+            document.getElementById('m-val').innerText = minutes < 10 ? '0' + minutes : minutes;
+            document.getElementById('s-val').innerText = seconds < 10 ? '0' + seconds : seconds;
+        }
+
+        function createTapHeartBurst(e) {
+            const burstCount = 6;
+            let clientX = e.clientX;
+            let clientY = e.clientY;
+
+            if (e.touches && e.touches.length > 0) {
+                clientX = e.touches[0].clientX;
+                clientY = e.touches[0].clientY;
+            } else if (e.changedTouches && e.changedTouches.length > 0) {
+                clientX = e.changedTouches[0].clientX;
+                clientY = e.changedTouches[0].clientY;
+            }
+
+            if (clientX === undefined || clientY === undefined) return;
+
+            for (let i = 0; i < burstCount; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'burst-heart';
+                heart.innerHTML = ['❤️', '💖', '💝', '✨'][Math.floor(Math.random() * 4)];
+                heart.style.left = clientX + 'px';
+                heart.style.top = clientY + 'px';
+
+                const angle = (i / burstCount) * 2 * Math.PI + (Math.random() * 0.4);
+                const distance = Math.random() * 50 + 30;
+                const mx = Math.cos(angle) * distance + 'px';
+                const my = Math.sin(angle) * distance + 'px';
+
+                heart.style.setProperty('--mx', mx);
+                heart.style.setProperty('--my', my);
+
+                document.body.appendChild(heart);
+                setTimeout(() => heart.remove(), 800);
+            }
+        }
+
+        const bookWrapper = document.getElementById('bookWrapper');
+        bookWrapper.addEventListener('click', flipCard);
+
+        let startX = 0;
+        bookWrapper.addEventListener('touchstart', e => startX = e.touches[0].clientX);
+        bookWrapper.addEventListener('touchend', e => {
+            let diffX = startX - e.changedTouches[0].clientX;
+            if (diffX > 50) flipCard(e);
+        });
+
+        function createPremiumParticle() {
+            const container = document.getElementById('heartsBg');
+            const particle = document.createElement('div');
+
+            const types = ['❤️', '✨', '💖', '🌸'];
+            particle.innerHTML = types[Math.floor(Math.random() * types.length)];
+
+            particle.style.position = 'absolute';
+            particle.style.left = Math.random() * 100 + 'vw';
+            particle.style.top = '-30px';
+            particle.style.fontSize = Math.random() * 14 + 10 + 'px';
+
+            const duration = Math.random() * 3 + 3;
+            particle.style.animation = `fallDown ${duration}s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards`;
+            particle.style.opacity = Math.random() * 0.5 + 0.3;
+
+            container.appendChild(particle);
+            setTimeout(() => particle.remove(), duration * 1000);
+        }
+
+        const style = document.createElement('style');
+        style.innerHTML = `
+            @keyframes fallDown {
+                0% { transform: translateY(0) rotate(0deg) translateX(0); }
+                50% { transform: translateY(50vh) rotate(180deg) translateX(15px); }
+                100% { transform: translateY(105vh) rotate(360deg) translateX(-15px); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+
+</html>
